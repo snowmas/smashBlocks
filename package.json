@@ -12,7 +12,8 @@
     "react": "16.13.1",
     "react-beautiful-dnd": "13.0.0",
     "react-dom": "16.13.1",
-    "styled-components": "5.1.1"
+    "styled-components": "5.1.1",
+    "uglify-js": "git+https://github.com/mishoo/UglifyJS2.git#harmony",
   },
   "devDependencies": {
     "react-scripts": "1.0.0"
