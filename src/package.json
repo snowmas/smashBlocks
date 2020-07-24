@@ -1,6 +1,6 @@
 {
   "name": "smashblocks",
-  "version": "1.0.0",
+  "version": "0.4.3",
   "description": "An example of having multiple drop targets using react-beautiful-dnd",
   "keywords": [],
   "homepage": "https://codesandbox.io/s/k260nyxq9v",
