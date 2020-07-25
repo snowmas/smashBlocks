@@ -38,6 +38,7 @@ const Container = styled.div`
 
   height: 100%;
   width: 100%;
+  max-width: 640px;   /* TODO: define for Desktop */
 
   background-color: white;
 
@@ -49,6 +50,8 @@ const Container = styled.div`
 const Viz = styled.div`
   flex: 10 1 auto; /* (fills remaining space) ...  */
   padding: 20px;
+
+  font-size: 1rem;
 `
 
 const Validation = styled.div`
@@ -56,6 +59,7 @@ const Validation = styled.div`
   /*  TRY: color: rgba(0, 0, 0, 0.5) */
   background-color: ${prop => prop.bgColor ? '#F1FDE3' : 'white'}; 
   padding: 20px;
+  font-size: 1rem;
 `
 
 
@@ -130,9 +134,70 @@ function validateNow(newState) {
   return newNewState;
 }
    
-// const SOLUTION_CORRECT = "\uD83D\uDE00";
-const SOLUTION_WRONG = "❓";  
-const SOLUTION_CORRECT = '😍';
+// const SOL_WRONG = "❓";  
+// const SOL_CORRECT = '😍';
+
+
+function ValidationFeedback(props) {
+  const SOLUTION_WRONG = "❓"; 
+  const SOLUTION_CORRECT = '😍';
+  const SYNTAX_CORRECT = '🌱';
+  
+  console.log("LOG VFC COMPONENT - props.isSolutionCorrect: " + props.isSolutionCorrect);
+
+  var validation_feedback = SOLUTION_WRONG;
+  if (props.isSyntaxCorrect) {
+    validation_feedback = SYNTAX_CORRECT;
+  } 
+  if (props.isSolutionCorrect) {
+    validation_feedback = SOLUTION_CORRECT;
+  }
+  // props.isSyntaxCorrect ? SYNTAX_CORRECT : SOLUTION_WRONG;
+  // const validation_feedback = props.isSolutionCorrect ? SOLUTION_CORRECT : SOLUTION_WRONG;
+  console.log("LOG VFC COMPONENT - validation_feedback: " + validation_feedback);
+
+  return validation_feedback;
+}
+
+class ValidationFeedbackContainer extends Component {
+ 
+/*
+  constructor(props) {
+    super(props);
+   
+  }
+*/
+
+  // NEVER USED
+    // const SOLUTION_CORRECT = '😍';
+
+    // prop => prop.isSolutionCorrect
+    // prop => prop.isSyntaxCorrect
+    
+    // const validation_feedback = SOLUTION_WRONG;
+
+  render() {
+    
+    return (
+ 
+      <ValidationFeedback 
+        isSolutionCorrect={this.props.isSolutionCorrect} 
+        isSyntaxCorrect={this.props.isSyntaxCorrect}
+      >
+        test {this.validation_feedback} 
+      </ValidationFeedback>
+
+    );
+  }
+}
+
+/*
+const ValidationFeedback = styled.div`
+  font-size: 1rem;
+`
+*/
+
+
 
    
    // console.log("LOG " + SOLUTION_WRONG + " " + SOLUTION_CORRECT);
@@ -231,13 +296,21 @@ class App extends Component {
         <DragDropContext onDragEnd={this.onDragEnd}>   
             <Container>
               <Viz>Die Hunde Sammy und Carla wiegen zusammen 55kg. Carla wiegt um 5kg mehr als Sammy.
-                Wie schwer sind die Hunde?
+                <br /><br /> Wie schwer sind die Hunde?
               </Viz>
               { // TODO: put into Validation tag: isCorrectSolution={isCorrect}, isCorrectSyntax={isCorrectSyntax}
                // <ValidationSyntax bgColor={this.state.isEqSyntaxCorrect}>Gültige Gleichung: {this.state.isEqSyntaxCorrect.toString()} </ValidationSyntax>  
                // Validation: {this.state.isEqSolutionCorrect.toString()}
               }
-              <Validation bgColor={this.state.isEqSolutionCorrect}>Korrekte Lösung:  {this.state.isEqSolutionCorrect ? SOLUTION_CORRECT : SOLUTION_WRONG} </Validation> 
+              <Validation bgColor={this.state.isEqSolutionCorrect}>
+                Korrekte Lösung:  {//this.state.isEqSolutionCorrect ? SOL_CORRECT : SOL_WRONG
+                } 
+                <ValidationFeedbackContainer 
+                  isSolutionCorrect={this.state.isEqSolutionCorrect} 
+                  isSyntaxCorrect={this.state.isEqSyntaxCorrect}
+                >
+                </ValidationFeedbackContainer>
+              </Validation> 
               <Math>
                   { 
                       this.state.columnOrder.map((columnId) => {

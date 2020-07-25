@@ -23,9 +23,9 @@ const TaskContainer = styled.div`
      align items vertically
      align items horizontally */
 
-
-
     background-color: ${props => (props.isDragging ? 'azure' : 'white')};
+
+    font-size: 1rem;
 `;
 
 export default class Task extends React.Component {
