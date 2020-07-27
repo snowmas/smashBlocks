@@ -10,6 +10,8 @@ import '@atlaskit/css-reset';
 
 import validate from "./validation";  // import my function to validate an equation
 
+import InsertSlider from './InsertSlider';
+
 /* ----------------------------------------------- */
 
 /* NOT IN USE
@@ -54,6 +56,7 @@ const Viz = styled.div`
   font-size: 1rem;
 `
 
+
 const Validation = styled.div`
   flex: 1 1 auto; /* (fills remaining space) ...  */
   /*  TRY: color: rgba(0, 0, 0, 0.5) */
@@ -71,7 +74,7 @@ const Validation = styled.div`
 
 
 const Math = styled.div`
-  flex: 0 0 auto;  /* dont grow, dont shrink, sized to content ... had it at: 0 1 200px; then 0 1 auto */
+  flex: 1 0 auto;  /* dont grow, dont shrink, sized to content ... had it at: 0 1 200px; then 0 1 auto */
   
   /* background-color: lightblue; */
  
@@ -179,13 +182,14 @@ class ValidationFeedbackContainer extends Component {
   render() {
     
     return (
- 
+
       <ValidationFeedback 
         isSolutionCorrect={this.props.isSolutionCorrect} 
         isSyntaxCorrect={this.props.isSyntaxCorrect}
       >
         test {this.validation_feedback} 
       </ValidationFeedback>
+
 
     );
   }
@@ -285,6 +289,13 @@ class App extends Component {
 
     };
 
+
+    // SLIDER
+    // Handle inputs change
+    handleChange = input => event => {
+      this.setState({ [input]: event.target.value });
+    }
+
     render() {
       // console.log("getWindowDimentions(): " + JSON.stringify(getWindowDimensions()) );
       
@@ -292,6 +303,12 @@ class App extends Component {
       // console.log("LOG isEqSyntaxCorrect: " + this.state.isEqSyntaxCorrect.toString()); // TODO: updates 1 run too late!
       // console.log("LOG isEqSolutionCorrect: " + this.state.isEqSolutionCorrect.toString()); // TODO: updates 1 run too late!
       
+      // SLIDER
+      const { propertyType, areaSpace, designStyle } = this.state;
+      const values = { propertyType, areaSpace, designStyle };
+      // const { values, handleChange } = this.props; // for Slider
+      const { handleChange } = this.props;
+
       return (
         <DragDropContext onDragEnd={this.onDragEnd}>   
             <Container>
@@ -322,6 +339,15 @@ class App extends Component {
                       })
                   }
               </Math>
+            {  /*
+              <InsertSlider 
+                values={values} 
+                handleChange={handleChange} 
+                style={{marginTop: '20px', marginBottom: '20px'}} 
+              />
+              */
+            }
+       
             </Container>
         </DragDropContext>
       )
