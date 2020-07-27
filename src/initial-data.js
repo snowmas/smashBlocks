@@ -36,7 +36,8 @@ const initialData = {
 
     // default for state (mathsteps will validate equation and update this booleam)
     isEqSolutionCorrect: false,
-    isEqSyntaxCorrect: false
+    isEqSyntaxCorrect: false,
+    areaSpace: 20
 };
 
 export default initialData;
