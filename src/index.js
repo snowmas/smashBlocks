@@ -290,11 +290,6 @@ class App extends Component {
     };
 
 
-    // SLIDER
-    // Handle inputs change
-    handleChange = input => event => {
-      this.setState({ [input]: event.target.value });
-    }
 
     render() {
       // console.log("getWindowDimentions(): " + JSON.stringify(getWindowDimensions()) );
@@ -303,11 +298,20 @@ class App extends Component {
       // console.log("LOG isEqSyntaxCorrect: " + this.state.isEqSyntaxCorrect.toString()); // TODO: updates 1 run too late!
       // console.log("LOG isEqSolutionCorrect: " + this.state.isEqSolutionCorrect.toString()); // TODO: updates 1 run too late!
       
+
+
+
       // SLIDER
       const { propertyType, areaSpace, designStyle } = this.state;
+      console.log("LOG index: this.state - areaSpace: " + areaSpace);
       const values = { propertyType, areaSpace, designStyle };
       // const { values, handleChange } = this.props; // for Slider
+      
+      // Setting a prop?
+      // const { complete, setCompleted } = this.props; <- this initializes a prop defines a setCompleted method?
       const { handleChange } = this.props;
+      console.log("LOG index: this.props - handleChange: " + handleChange);
+
 
       return (
         <DragDropContext onDragEnd={this.onDragEnd}>   
@@ -339,13 +343,13 @@ class App extends Component {
                       })
                   }
               </Math>
-            {  /*
+            {  
               <InsertSlider 
                 values={values} 
                 handleChange={handleChange} 
                 style={{marginTop: '20px', marginBottom: '20px'}} 
               />
-              */
+              
             }
        
             </Container>
