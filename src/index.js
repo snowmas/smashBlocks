@@ -11,6 +11,7 @@ import '@atlaskit/css-reset';
 import validate from "./validation";  // import my function to validate an equation
 
 import InsertSlider from './InsertSlider';
+import InsertButton from './InsertButton';
 
 /* ----------------------------------------------- */
 
@@ -313,6 +314,9 @@ class App extends Component {
       console.log("LOG index: this.props - handleChange: " + handleChange);
 
 
+      // INSERTBUTTON
+      // const { isInserting } = this.state;
+
       return (
         <DragDropContext onDragEnd={this.onDragEnd}>   
             <Container>
@@ -332,6 +336,7 @@ class App extends Component {
                 >
                 </ValidationFeedbackContainer>
               </Validation> 
+              <InsertButton></InsertButton>
               <Math>
                   { 
                       this.state.columnOrder.map((columnId) => {
@@ -343,11 +348,13 @@ class App extends Component {
                       })
                   }
               </Math>
-            {  
+            { // InsertSlider => isInserting  ? display InsertSlider : not
+              
               <InsertSlider 
                 values={values} 
                 handleChange={handleChange} 
-                style={{marginTop: '20px', marginBottom: '20px'}} 
+                style={{marginTop: '20px', marginBottom: '20px'}}
+                isInserting={this.state.isInserting} 
               />
               
             }
