@@ -13,10 +13,11 @@ export default function InsertSlider({ values, handleChange, isInserting }) {
   // if Button set Insert Mode to false, don't display the InsertSlider at all (by beforehand preventing to return it)
   // NOTE: can't put this before React.useState because it doesn't allow that ...
   // TODO: change it to: !props.isInserting ... ?
+  console.log("INSERTSLIDER: prop isInserting: " + isInserting);
   if (!isInserting) {
     return null;
   }
-
+  console.log("INSERTSLIDER: beyond return null")
 
   const handleSliderChange = (event, newValue) => {
     setValue(newValue);
