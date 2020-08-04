@@ -37,6 +37,8 @@ const initialData = {
     // default for state (mathsteps will validate equation and update this booleam)
     isEqSolutionCorrect: false,
     isEqSyntaxCorrect: false,
+    
+    // for InsertSlider: current value
     areaSpace: 20,
 
 

@@ -208,7 +208,12 @@ const ValidationFeedback = styled.div`
    // console.log("LOG " + SOLUTION_WRONG + " " + SOLUTION_CORRECT);
 
 class App extends Component {
+
+
+
     state = initialData;
+
+
 
     onDragEnd = result => {
         document.body.style.color = 'inherit';
@@ -290,6 +295,13 @@ class App extends Component {
 
     };
 
+    // NOT WORKING - BUTTON
+    
+
+    // Function to set the parent's state
+    handleInsertChange = isInserting => {
+      this.setState({ isInserting: !isInserting });
+    }
 
 
     render() {
@@ -316,7 +328,8 @@ class App extends Component {
 
       // INSERTBUTTON
       // const { isInserting } = this.state;
-
+      console.log("LOG App: state default isInserting: " + this.state.isInserting);
+   
       return (
         <DragDropContext onDragEnd={this.onDragEnd}>   
             <Container>
@@ -336,7 +349,7 @@ class App extends Component {
                 >
                 </ValidationFeedbackContainer>
               </Validation> 
-              <InsertButton></InsertButton>
+              <InsertButton isInserting={this.state.isInserting} onInsertChange={this.handleInsertChange}></InsertButton>
               <Math>
                   { 
                       this.state.columnOrder.map((columnId) => {

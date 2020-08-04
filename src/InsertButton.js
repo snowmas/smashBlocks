@@ -13,7 +13,7 @@ const StyledButtonContainer = styled.button`
   width: fit-content;   /* fit button width to text amount*/
 `;
 
-
+/*
 // !! PROBLEM .. does not trigger InsertSlider ... use state instead of props?
 var isInserting = false; // without props, just state
 const handleClick = event => {
@@ -24,14 +24,47 @@ isInserting = !isInserting; // just props, without state
   // return alert("isInserting: " + isInserting);
 return (isInserting);
 };
+*/
+
+
+
 
 
 export default class InsertButton extends React.Component {
 
+/*
+  constructor(props) {
+    super(props);
+    this.handleClick = this.handleClick.bind(this);
+    // this.state = {color: 'red'};
+  }
+*/
+
+  // !! PROBLEM .. does not trigger InsertSlider ... use state instead of props?
+  // var isInserting = false; // without props, just state
+  // handleClick = (event) => {
+  handleClick = (isInserting) => {
+  // console.log("INSERTBUTTON handleClick() - props.isInserting before: " + this.props.isInserting);
+  // var isInserting = this.props.isInserting;
+  console.log("INSERTBUTTON handleClick() - isInserting before: " + this.props.isInserting);
+    isInserting = !isInserting;
+    console.log("INSERTBUTTON handleClick() - isInserting after: " + isInserting);
+    
+    // this.setState({ isInserting: isInserting});
+    this.props.onInsertChange(isInserting);
+    // props.setChanged();
+    
+    // console.log("INSERTBUTTON handleClick() - state.isInserting: " + this.state.isInserting);
+    // return alert("isInserting: " + isInserting);
+    // return (isInserting);
+  };
+
+
   render() {
       return (
           // return this.props.task.content;
-          <StyledButtonContainer type="button" onClick={handleClick}>Prüfen</StyledButtonContainer>
+          // WAS BEFORE onClick={{this.handleClick}}
+          <StyledButtonContainer type="button" onClick={this.handleClick}>Prüfen</StyledButtonContainer>
       );
   }
 }
