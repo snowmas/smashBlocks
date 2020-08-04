@@ -43,11 +43,13 @@ export default class InsertButton extends React.Component {
   // !! PROBLEM .. does not trigger InsertSlider ... use state instead of props?
   // var isInserting = false; // without props, just state
   // handleClick = (event) => {
-  handleClick = (isInserting) => {
+
+  handleClick = (event) => {
   // console.log("INSERTBUTTON handleClick() - props.isInserting before: " + this.props.isInserting);
   // var isInserting = this.props.isInserting;
   console.log("INSERTBUTTON handleClick() - isInserting before: " + this.props.isInserting);
-    isInserting = !isInserting;
+   // isInserting = !isInserting;
+    var isInserting = this.props.isInserting;
     console.log("INSERTBUTTON handleClick() - isInserting after: " + isInserting);
     
     // this.setState({ isInserting: isInserting});
@@ -61,10 +63,11 @@ export default class InsertButton extends React.Component {
 
 
   render() {
+      console.log("INSERTBUTTON render - isInserting: " + this.props.isInserting);
       return (
           // return this.props.task.content;
           // WAS BEFORE onClick={{this.handleClick}}
-          <StyledButtonContainer type="button" onClick={this.handleClick}>Prüfen</StyledButtonContainer>
+          <StyledButtonContainer type="button" onClick={this.handleClick} >Prüfen</StyledButtonContainer>
       );
   }
 }
