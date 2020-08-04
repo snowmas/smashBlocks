@@ -213,7 +213,7 @@ class App extends Component {
 
     state = initialData;
 
-
+    
 
     onDragEnd = result => {
         document.body.style.color = 'inherit';
@@ -295,12 +295,17 @@ class App extends Component {
 
     };
 
-    // NOT WORKING - BUTTON
+ 
     
-
+    // INSERTBUTTON
     // Function to set the parent's state
     handleInsertChange = isInserting => {
-      this.setState({ isInserting: !isInserting });
+      console.log("App handleInsertChange: before isInserting: " + isInserting);
+      // var reversedInsert = !isInserting;
+     isInserting = !isInserting;
+      console.log("App handleInsertChange: after isInserting: " + isInserting);
+      this.setState({ isInserting: isInserting });
+      console.log("App handleInsertChange: state.isInserting: " + this.state.isInserting);
     }
 
 
@@ -311,7 +316,7 @@ class App extends Component {
       // console.log("LOG isEqSyntaxCorrect: " + this.state.isEqSyntaxCorrect.toString()); // TODO: updates 1 run too late!
       // console.log("LOG isEqSolutionCorrect: " + this.state.isEqSolutionCorrect.toString()); // TODO: updates 1 run too late!
       
-
+      console.log("--- APP ---- RENDER-START ------------- ");
 
 
       // SLIDER
