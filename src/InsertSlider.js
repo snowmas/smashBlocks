@@ -13,11 +13,11 @@ export default function InsertSlider({ values, handleChange, isInserting }) {
   // if Button set Insert Mode to false, don't display the InsertSlider at all (by beforehand preventing to return it)
   // NOTE: can't put this before React.useState because it doesn't allow that ...
   // TODO: change it to: !props.isInserting ... ?
-  console.log("INSERTSLIDER: prop isInserting: " + isInserting);
   if (!isInserting) {
+    console.log("INSERTSLIDER: not executing: prop isInserting: " + isInserting);
     return null;
   }
-  console.log("INSERTSLIDER: beyond return null")
+  console.log("INSERTSLIDER: executing: prop isInserting: " + isInserting);
 
   const handleSliderChange = (event, newValue) => {
     setValue(newValue);
@@ -32,10 +32,10 @@ export default function InsertSlider({ values, handleChange, isInserting }) {
   const handleBlur = () => {
     if (value < 0) {
       setValue(0);
-      console.log("LOG IS: handleBlur (0)");
+      console.log("INSERTSLIDER LOG IS: handleBlur (0)");
     } else if (value > 100) {
       setValue(100);
-      console.log("LOG IS: handleBlur (100)");
+      console.log("INSERTSLIDER LOG IS: handleBlur (100)");
     }
   };
 
@@ -45,7 +45,7 @@ export default function InsertSlider({ values, handleChange, isInserting }) {
       // console.log("LOG index: handleChange: input: " + input);  // INPUT NOT NEEDED HERE; input is only need to make handleChange generic and tell it which state var needs to be updated
       // NOT IN USE yet? this.setState({ [input]: event.target.value });  // ? needed to make handleChange generic, to handle the input field?
       setValue(event.target.value); // ADDED BY ME: sets the areaSpace state
-      console.log("LOG index: handleChange: event.target.value: " + event.target.value);
+      console.log("INSERTSLIDER: handleChange: save state setValue(): event.target.value: " + event.target.value);
     }
 
 

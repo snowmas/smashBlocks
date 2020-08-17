@@ -47,10 +47,10 @@ export default class InsertButton extends React.Component {
   handleClick = (event) => {
   // console.log("INSERTBUTTON handleClick() - props.isInserting before: " + this.props.isInserting);
   // var isInserting = this.props.isInserting;
-  console.log("INSERTBUTTON handleClick() - isInserting before: " + this.props.isInserting);
+  console.log("INSERTBUTTON: handleClick() - isInserting before: " + this.props.isInserting);
    // isInserting = !isInserting;
     var isInserting = this.props.isInserting;
-    console.log("INSERTBUTTON handleClick() - isInserting after: " + isInserting);
+    console.log("INSERTBUTTON: handleClick() - isInserting after: " + isInserting);
     
     // this.setState({ isInserting: isInserting});
     this.props.onInsertChange(isInserting);
@@ -63,7 +63,7 @@ export default class InsertButton extends React.Component {
 
 
   render() {
-      console.log("INSERTBUTTON render - isInserting: " + this.props.isInserting);
+      console.log("INSERTBUTTON: render(): this.props: isInserting: " + this.props.isInserting);
       return (
           // return this.props.task.content;
           // WAS BEFORE onClick={{this.handleClick}}

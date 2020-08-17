@@ -98,16 +98,16 @@ function validateNow(newState) {
 
         // GET EQUATION: this is the USERS EQUATION
         const tasksX = column2.taskIds.map(taskId => newState.tasks[taskId].content).join(''); // WORKS, but ...
-        console.log("PRINT STATE task content: " + JSON.stringify(tasksX));
+        console.log("INDEX: validateNow(): PRINT STATE: current equation: tasks: " + JSON.stringify(tasksX));
 
         
         // SOLVE: run mathsteps ... and get the solved result
         const msResult = validate(tasksX);   // run validation and print to console
-        console.log("LOG msResult: " + msResult);
+        console.log("INDEX: validateNow(): validate() result: msResult: " + msResult);
 
        // SYNTAX CHECK ... TODO: rudimentary implementation 
         var isSyntaxCorrect = (msResult === "" ? false : true); // empty -> false; not empty -> true
-        console.log("LOG isSyntaxCorrect: " + isSyntaxCorrect.toString());
+        console.log("INDEX: validateNow(): isSyntaxCorrect: " + isSyntaxCorrect.toString());
 
         // SOLUTION CHECK ... COMPARE: check if users equation is correct
         // -> compare mathsteps result with hardcoed result 
@@ -117,7 +117,7 @@ function validateNow(newState) {
         var isSolutionCorrect = false;
         if (msResult === "x = 25") { isSolutionCorrect = true; }
         if (msResult === "x = 30") { isSolutionCorrect = true; }
-        console.log("LOG isSolutionCorrect: " + isSolutionCorrect.toString());
+        console.log("INDEX: validateNow(): isSolutionCorrect: " + isSolutionCorrect.toString());
 
         // UPDATE: show the user if his equation correct
         // -> update variable which gets display to user
@@ -147,7 +147,7 @@ function ValidationFeedback(props) {
   const SOLUTION_CORRECT = '😍';
   const SYNTAX_CORRECT = '🌱';
   
-  console.log("LOG VFC COMPONENT - props.isSolutionCorrect: " + props.isSolutionCorrect);
+  console.log("INDEX: ValidationFeedback: props.isSolutionCorrect: " + props.isSolutionCorrect);
 
   var validation_feedback = SOLUTION_WRONG;
   if (props.isSyntaxCorrect) {
@@ -158,7 +158,7 @@ function ValidationFeedback(props) {
   }
   // props.isSyntaxCorrect ? SYNTAX_CORRECT : SOLUTION_WRONG;
   // const validation_feedback = props.isSolutionCorrect ? SOLUTION_CORRECT : SOLUTION_WRONG;
-  console.log("LOG VFC COMPONENT - validation_feedback: " + validation_feedback);
+  console.log("INDEX: ValidationFeedback: validation_feedback: " + validation_feedback);
 
   return validation_feedback;
 }
@@ -216,6 +216,7 @@ class App extends Component {
     
 
     onDragEnd = result => {
+        console.log("INDEX: onDragEnd(): --------- dragging ------------");
         document.body.style.color = 'inherit';
         document.body.style.backgroundColor = 'inherit';
       
@@ -260,6 +261,8 @@ class App extends Component {
           this.setState(newNewState);   // update state
           // ------- END of VALIDATON -----------------
 
+          console.log("INDEX: onDragEnd(): --------- finished dragging (within row) ------------");
+
           return;  
         }
 
@@ -293,6 +296,8 @@ class App extends Component {
         this.setState(newNewState);   // update state
         // ------- END of VALIDATON -----------------
 
+        console.log("INDEX: onDragEnd(): --------- finished dragging (to other row) ------------");
+
     };
 
  
@@ -300,12 +305,12 @@ class App extends Component {
     // INSERTBUTTON
     // Function to set the parent's state
     handleInsertChange = isInserting => {
-      console.log("App handleInsertChange: before isInserting: " + isInserting);
+      console.log("INDEX: handleInsertChange(): before isInserting: " + isInserting);
       // var reversedInsert = !isInserting;
      isInserting = !isInserting;
-      console.log("App handleInsertChange: after isInserting: " + isInserting);
+      console.log("INDEX: handleInsertChange(): after isInserting: " + isInserting);
       this.setState({ isInserting: isInserting });
-      console.log("App handleInsertChange: state.isInserting: " + this.state.isInserting);
+      console.log("INDEX: handleInsertChange(): state.isInserting: " + this.state.isInserting);
     }
 
 
@@ -316,24 +321,24 @@ class App extends Component {
       // console.log("LOG isEqSyntaxCorrect: " + this.state.isEqSyntaxCorrect.toString()); // TODO: updates 1 run too late!
       // console.log("LOG isEqSolutionCorrect: " + this.state.isEqSolutionCorrect.toString()); // TODO: updates 1 run too late!
       
-      console.log("--- APP ---- RENDER-START ------------- ");
+      console.log("INDEX: render(): ------- RENDER-START ------------- ");
 
 
       // SLIDER
       const { propertyType, areaSpace, designStyle } = this.state;
-      console.log("LOG index: this.state - areaSpace: " + areaSpace);
+      console.log("INDEX: render(): this.state default: areaSpace: " + areaSpace);
       const values = { propertyType, areaSpace, designStyle };
       // const { values, handleChange } = this.props; // for Slider
       
       // Setting a prop?
       // const { complete, setCompleted } = this.props; <- this initializes a prop defines a setCompleted method?
       const { handleChange } = this.props;
-      console.log("LOG index: this.props - handleChange: " + handleChange);
+      console.log("INDEX: render(): this.props: handleChange: " + handleChange);
 
 
       // INSERTBUTTON
       // const { isInserting } = this.state;
-      console.log("LOG App: state default isInserting: " + this.state.isInserting);
+      console.log("INDEX: render(): this.state default: isInserting: " + this.state.isInserting);
    
       return (
         <DragDropContext onDragEnd={this.onDragEnd}>   

@@ -44,7 +44,7 @@ const validate = function val(eq) {
   // SOLVE EQUATION in use
   const steps = mathsteps.solveEquation(equation);
 
-  console.log("---- SOLVEEQUATION: " + equation);
+  console.log("VALIDATION: --- SOLVEEQUATION ---: equation: " + equation);
   steps.forEach(step => {
     //console.log("before change: " + step.oldEquation.ascii());
     console.log(
