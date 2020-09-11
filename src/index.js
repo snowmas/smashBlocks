@@ -302,6 +302,10 @@ class App extends Component {
 
  
     
+    handleSliderChange = sliderValue => {
+      console.log("INDEX: handleSliderChange(): sliderValue: " + sliderValue);
+    }
+
     // INSERTBUTTON
     // Function to set the parent's state
     handleInsertChange = isInserting => {
@@ -311,6 +315,46 @@ class App extends Component {
       console.log("INDEX: handleInsertChange(): after isInserting: " + isInserting);
       this.setState({ isInserting: isInserting });
       console.log("INDEX: handleInsertChange(): state.isInserting: " + this.state.isInserting);
+
+
+      
+      // UPDATE ITEMS/TASKS labels if isInserting
+ /*     
+      // only if isInserting
+      if (isInserting) {
+        
+        // First: get areaSpace ... either from state or pros
+        const areaSpace = this.state.areaSpace;
+
+        // Second: get items of column 1
+        const columnId = 1;
+        
+        // TODO only if column 1 is not empty
+        // iterate through tasks and look for "x" value; 
+        // replace each "x" with areaChange
+        const column = this.state.columns[columnId];
+        const newTasks = column.taskIds.map(taskId => 
+          // this.state.tasks[taskId];
+          if (this.state.tasks[taskId].contains("x")) {
+            this.state.tasks[taskId].replace(areaSpace);
+          } else {
+            this.state.tasks[taskId];
+          }
+        );
+        // setState( ... newTasks)
+      
+
+    
+      
+        // // return column.title;
+        //  return <Column key={column.id} column={column} tasks={tasks} />;
+      } else if (!isInserting) {
+        // replace the current with the original
+      } else {
+        console.log("INDEX: WARNING!!! - SHOULD NEVER HAPPEN");
+      }
+*/
+      // if isInserting (better: dragging) update tasks with content "x" to current slider value
     }
 
 
@@ -327,14 +371,8 @@ class App extends Component {
       // SLIDER
       const { propertyType, areaSpace, designStyle } = this.state;
       console.log("INDEX: render(): this.state default: areaSpace: " + areaSpace);
-      const values = { propertyType, areaSpace, designStyle };
-      // const { values, handleChange } = this.props; // for Slider
-      
-      // Setting a prop?
-      // const { complete, setCompleted } = this.props; <- this initializes a prop defines a setCompleted method?
-      const { handleChange } = this.props;
-      console.log("INDEX: render(): this.props: handleChange: " + handleChange);
-
+      const values = { propertyType, areaSpace, designStyle }; // for InsertSlider
+    
 
       // INSERTBUTTON
       // const { isInserting } = this.state;
@@ -375,7 +413,7 @@ class App extends Component {
               
               <InsertSlider 
                 values={values} 
-                handleChange={handleChange} 
+                onSliderChange={this.handleSliderChange} // pass the index: onSliderChange function as prop to InsertSlider; there InsertSlider updates in handleSliderChange? the prop sliderValue, which can be used in index to update labels in tasks 
                 style={{marginTop: '20px', marginBottom: '20px'}}
                 isInserting={this.state.isInserting} 
               />

@@ -4,7 +4,7 @@
 import React from "react";
 import { Slider, Input } from "@material-ui/core/";
 
-export default function InsertSlider({ values, handleChange, isInserting }) {
+export default function InsertSlider({ values, isInserting, onSliderChange }) {
 
   // console.log("LOG IS: values.areaSpace: " + values.areaSpace);
   const [value, setValue] = React.useState(values.areaSpace);
@@ -19,9 +19,13 @@ export default function InsertSlider({ values, handleChange, isInserting }) {
   }
   console.log("INSERTSLIDER: executing: prop isInserting: " + isInserting);
 
+  
   const handleSliderChange = (event, newValue) => {
     setValue(newValue);
     // console.log("LOG IS: handleSliderChange: setValue(newValue): " + newValue);
+
+    // updating the prop onSliderChange received from index, with the new slider value
+    onSliderChange(newValue); // must not use this.props.onSliderChange because its not a class component; also props.onSliderchange not working because function is not using { props } but individual variables instead
   };
 
   const handleInputChange = event => {
@@ -39,9 +43,10 @@ export default function InsertSlider({ values, handleChange, isInserting }) {
     }
   };
 
-      // SLIDER
+    // SLIDER
     // Handle inputs change
-    handleChange = input => event => {  // input is areaSpace?
+    // ?? IS THIS WORKING AT ALL? ... log never gets called?
+    const handleChange = input => event => {  // input is areaSpace?
       // console.log("LOG index: handleChange: input: " + input);  // INPUT NOT NEEDED HERE; input is only need to make handleChange generic and tell it which state var needs to be updated
       // NOT IN USE yet? this.setState({ [input]: event.target.value });  // ? needed to make handleChange generic, to handle the input field?
       setValue(event.target.value); // ADDED BY ME: sets the areaSpace state
