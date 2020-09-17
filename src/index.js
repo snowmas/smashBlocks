@@ -304,6 +304,32 @@ class App extends Component {
     
     handleSliderChange = sliderValue => {
       console.log("INDEX: handleSliderChange(): sliderValue: " + sliderValue);
+
+      this.state.columnOrder.map(() => {
+        const column = this.state.columns['column-1'];
+        console.log("COLUMN:" + column.id.toString());
+        // ! TODO: if no task is present in column-1
+        var tasks = column.taskIds.map(taskId => this.state.tasks[taskId].content); // .content
+  
+        for (const task in tasks) {
+          if (task.includes("x")) { // !! TODO: task.content not working
+            console.log("TASK X: task.content: " + task);
+          } else {
+            console.log("TASK NOT-X: task.content: " + task);
+          }
+
+          
+        // REPLACE
+        // var tasksStringified = JSON.stringify(tasks);
+        // tasksStringified = tasksStringified.replace('"content": "x"', '"content": "a"');
+        
+
+        }
+           
+        return tasks;
+      })
+
+      // TODO: setState (with new tasks)
     }
 
     // INSERTBUTTON
