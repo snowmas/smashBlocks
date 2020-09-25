@@ -300,34 +300,76 @@ class App extends Component {
 
     };
 
- 
+
     
     handleSliderChange = sliderValue => {
       console.log("INDEX: handleSliderChange(): sliderValue: " + sliderValue);
 
-      this.state.columnOrder.map(() => {
-        const column = this.state.columns['column-1'];
-        console.log("COLUMN:" + column.id.toString());
-        // ! TODO: if no task is present in column-1
-        var tasks = column.taskIds.map(taskId => this.state.tasks[taskId].content); // .content
-  
-        for (const task in tasks) {
-          if (task.includes("x")) { // !! TODO: task.content not working
-            console.log("TASK X: task.content: " + task);
-          } else {
-            console.log("TASK NOT-X: task.content: " + task);
-          }
+      // --- 1. GET THE TASKIDS THAT I NEED -----
 
+      var currentState = this.state;
+      var column1 = currentState.columns['column-1']; // .taskIds DOES NOT WORK, WHY?
+      console.log("--- COLUMN1: " + JSON.stringify(column1)); // works {"id":"column-1","taskIds":["task-1","task-3"]}
+      var taskIds = column1.taskIds;
+      console.log("--- TASKIDS: " + JSON.stringify(taskIds)); // ["task-1","task-3"] 
+
+
+      taskIds.map(taskId => {
+        console.log("--- TASKid: " + taskId); // works: task-1      task-3
+        return taskId; // NEEDED in arrow function; BUT NOT USED ??
+      });
+
+
+      // --- 2. LOOK IN ALL TASKS - for these tasks -----
+
+      // WORKS AND CAN MATCH ... BUT HOW TO ACCESS .content and replace it ??
+      taskIds.map(taskId => {
+        var taskContent = currentState.tasks[taskId].content;
+        console.log("+++ cur TASKCONTENT: " + JSON.stringify(taskContent));
+
+        // TODO: replace only where content is "x"
+        //if (taskContent === "x") {
+
+          const newTask = {
+            ...currentState.tasks[taskId],
+            content: sliderValue,     // ! update task content with current slider value (content is treated as string, sliderValue as variable)
+          };
+          console.log("+++ NEWTASK: " + JSON.stringify(newTask));
+  
+          // TODO: REPLACE EXISTING TASK, not just add a new one with same id
+  
+          // combine all tasks that should be updated into 1 setState()? outside of map
+          const newState = {
+            ...this.state,  // replace with currentState?
+            tasks: {
+            ...this.state.tasks,
+              [taskId]: newTask,
+            },
+          };
+          console.log("+++ NEWSTATE: " + JSON.stringify(newState, null, 2));
+  
+  
+          this.setState(newState);    // update state with new order of items
+  
+
+
+       // } else {
+        //  console.log("INDEX REPLACE: else: no need to replace: " + taskId);
+      //  }
+
+  
+        return taskId; // REFACTOR: NEEDED in arrow function; BUT NOT USED ??
+      });
+
+
+  
           
         // REPLACE
         // var tasksStringified = JSON.stringify(tasks);
         // tasksStringified = tasksStringified.replace('"content": "x"', '"content": "a"');
         
 
-        }
-           
-        return tasks;
-      })
+ 
 
       // TODO: setState (with new tasks)
     }
