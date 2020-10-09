@@ -4,7 +4,7 @@
 import React from "react";
 import { Slider, Input } from "@material-ui/core/";
 
-export default function InsertSlider({ values, isInserting, onSliderChange }) {
+export default function InsertSlider({ values, isInserting, onSliderChange, onSliderChangeCommited }) {
 
   // console.log("LOG IS: values.areaSpace: " + values.areaSpace);
   const [value, setValue] = React.useState(values.areaSpace);
@@ -25,8 +25,14 @@ export default function InsertSlider({ values, isInserting, onSliderChange }) {
     // console.log("LOG IS: handleSliderChange: setValue(newValue): " + newValue);
 
     // updating the prop onSliderChange received from index, with the new slider value
+    // this is a function from index.js, which was passed as a prop
     onSliderChange(newValue); // must not use this.props.onSliderChange because its not a class component; also props.onSliderchange not working because function is not using { props } but individual variables instead
   };
+
+  const handleSliderChangeCommitted = () =>  {
+    onSliderChangeCommited();
+  }
+
 
   const handleInputChange = event => {
     setValue(event.target.value === "" ? "" : Number(event.target.value));
@@ -78,9 +84,7 @@ export default function InsertSlider({ values, isInserting, onSliderChange }) {
         step={1}
         min={0}
         max={55}
-        onChangeCommitted={(event, value) =>
-          handleChange("areaSpace")({ target: { value } })
-        }
+        onChangeCommitted={handleSliderChangeCommitted}
       />
     </div>
   );
