@@ -298,7 +298,8 @@ class App extends Component {
         // ------- END of VALIDATON -----------------
 
         // TODO ?? MAKE THIS WORK FOR ALL TASK MOVMENTS, NOT JUST #4
-        this.setState({ initialState: this.state });
+        // MOVED, NOT NEEDED ANYMORE
+        // this.setState({ initialState: this.state });
 
         console.log("INDEX: onDragEnd(): --------- finished dragging (to other row) ------------");
 
@@ -328,6 +329,7 @@ class App extends Component {
       }
      */
       
+
       
 
       // --- 1. GET THE TASKIDS THAT I NEED from the current state-----
@@ -376,6 +378,7 @@ class App extends Component {
               [taskId]: newTask,
             },
           };
+          // log whole state
           console.log("+++ NEWSTATE: " + JSON.stringify(newState, null, 2));
   
           // TODO PUT THIS OUTSIDE OF the map function for performance;
@@ -414,11 +417,35 @@ class App extends Component {
       console.log("INDEX: handleInsertChange(): before isInserting: " + isInserting);
       // var reversedInsert = !isInserting;
      isInserting = !isInserting;
+
       console.log("INDEX: handleInsertChange(): after isInserting: " + isInserting);
-      this.setState({ isInserting: isInserting });
+      // this.setState({ isInserting: isInserting });
+      console.log("INDEX: handleInsertChange(): before setState() isInserting: " + this.state.isInserting);
+    
+      this.setState((state, isInserting) => ({
+          // isInserting: isInserting // has the [object Object] problem?
+        isInserting: !state.isInserting // can remove the isInserting stuff above?
+          
+      }));
+      // not correct? why? setState done asynchronously? or smthg else?
       console.log("INDEX: handleInsertChange(): state.isInserting: " + this.state.isInserting);
 
 
+      // SAVE INITIAL STATE for handleSliderChange
+      // for updating task content, if slider is moved
+      // remember current state, so thtat it can be reverted onChangeCommitted
+      // TODO: make this more robust
+      
+       if (isInserting) {
+      // if (this.state.initialState == null) {
+        // this.setState({ initialState: this.state });
+        this.setState((state) => ({
+          initialState: state
+        }));
+       
+        console.log("+++ this.state: " + JSON.stringify(this.state, null, 2));
+        console.log("SAVED INITIALSTATE SNAPSHOT");
+      }
       
       // UPDATE ITEMS/TASKS labels if isInserting
  /*     
@@ -463,7 +490,7 @@ class App extends Component {
     handleSliderChangeCommitted = initialTaskValues =>  {
       
       this.setState(this.state.initialState);  // revert state to state with initial values after slider use
-      this.setState({ initialState: null }); // reset after slider use
+      // this.setState({ initialState: null }); // reset after slider use
       console.log("HANDLESLIDERCHANGECOMMITED: reset initialState ... at least tried");
       
     }
