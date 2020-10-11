@@ -212,6 +212,7 @@ class App extends Component {
 
 
     state = initialData;
+    
 
     
 
@@ -296,18 +297,45 @@ class App extends Component {
         this.setState(newNewState);   // update state
         // ------- END of VALIDATON -----------------
 
+        // TODO ?? MAKE THIS WORK FOR ALL TASK MOVMENTS, NOT JUST #4
+        // MOVED, NOT NEEDED ANYMORE
+        // this.setState({ initialState: this.state });
+
         console.log("INDEX: onDragEnd(): --------- finished dragging (to other row) ------------");
 
     };
 
 
     
+      
+    
+    // update variables with slider value, while dragging slider, if "Prüfen" is activated
     handleSliderChange = sliderValue => {
       console.log("INDEX: handleSliderChange(): sliderValue: " + sliderValue);
 
-      // --- 1. GET THE TASKIDS THAT I NEED -----
+      // remember which tasks contained an "x", 
+      // because the current state will be overwritten with the slider value multiple times 
+      
+
+      var initialState = this.state.initialState;
+/*
+      if (initialState == null) {
+        this.setState({ initialState: this.state });
+        console.log("INITIALSTATE was null");
+        console.log("+++ INITIALSTATE: " + JSON.stringify(initialState, null, 2));
+      } else {
+        console.log("INITIALSTATE WAS SET");
+        console.log("+++ INITIALSTATE: " + JSON.stringify(initialState, null, 2));
+      }
+     */
+      
+
+      
+
+      // --- 1. GET THE TASKIDS THAT I NEED from the current state-----
 
       var currentState = this.state;
+
       var column1 = currentState.columns['column-1']; // .taskIds DOES NOT WORK, WHY?
       console.log("--- COLUMN1: " + JSON.stringify(column1)); // works {"id":"column-1","taskIds":["task-1","task-3"]}
       var taskIds = column1.taskIds;
@@ -321,14 +349,18 @@ class App extends Component {
 
 
       // --- 2. LOOK IN ALL TASKS - for these tasks -----
+      var newState = null;
 
       // WORKS AND CAN MATCH ... BUT HOW TO ACCESS .content and replace it ??
       taskIds.map(taskId => {
-        var taskContent = currentState.tasks[taskId].content;
+        var taskContent = initialState.tasks[taskId].content;
         console.log("+++ cur TASKCONTENT: " + JSON.stringify(taskContent));
 
         // TODO: replace only where content is "x"
-        //if (taskContent === "x") {
+        // WORKS BUT ONLY THE FIRST TIME; Further: x -> 16 -> no replacement
+          // REMEMBER INITIAL STATE and reset to x
+          // END WITH PRÜFEN ENDE (works?)
+         if (taskContent === "x") {
 
           const newTask = {
             ...currentState.tasks[taskId],
@@ -339,29 +371,34 @@ class App extends Component {
           // TODO: REPLACE EXISTING TASK, not just add a new one with same id
   
           // combine all tasks that should be updated into 1 setState()? outside of map
-          const newState = {
+          newState = {
             ...this.state,  // replace with currentState?
             tasks: {
             ...this.state.tasks,
               [taskId]: newTask,
             },
           };
+          // log whole state
           console.log("+++ NEWSTATE: " + JSON.stringify(newState, null, 2));
   
-  
+          // TODO PUT THIS OUTSIDE OF the map function for performance;
+          // but need to bundle all newTask 's into one update; 
+          // else just the last one will be updated
           this.setState(newState);    // update state with new order of items
   
 
 
-       // } else {
-        //  console.log("INDEX REPLACE: else: no need to replace: " + taskId);
-      //  }
+      
+           
+         } else {
+            console.log("INDEX REPLACE: else: did not replace: " + taskId);
+         }
 
   
         return taskId; // REFACTOR: NEEDED in arrow function; BUT NOT USED ??
       });
 
-
+      
   
           
         // REPLACE
@@ -380,11 +417,35 @@ class App extends Component {
       console.log("INDEX: handleInsertChange(): before isInserting: " + isInserting);
       // var reversedInsert = !isInserting;
      isInserting = !isInserting;
+
       console.log("INDEX: handleInsertChange(): after isInserting: " + isInserting);
-      this.setState({ isInserting: isInserting });
+      // this.setState({ isInserting: isInserting });
+      console.log("INDEX: handleInsertChange(): before setState() isInserting: " + this.state.isInserting);
+    
+      this.setState((state, isInserting) => ({
+          // isInserting: isInserting // has the [object Object] problem?
+        isInserting: !state.isInserting // can remove the isInserting stuff above?
+          
+      }));
+      // not correct? why? setState done asynchronously? or smthg else?
       console.log("INDEX: handleInsertChange(): state.isInserting: " + this.state.isInserting);
 
 
+      // SAVE INITIAL STATE for handleSliderChange
+      // for updating task content, if slider is moved
+      // remember current state, so thtat it can be reverted onChangeCommitted
+      // TODO: make this more robust
+      
+       if (isInserting) {
+      // if (this.state.initialState == null) {
+        // this.setState({ initialState: this.state });
+        this.setState((state) => ({
+          initialState: state
+        }));
+       
+        console.log("+++ this.state: " + JSON.stringify(this.state, null, 2));
+        console.log("SAVED INITIALSTATE SNAPSHOT");
+      }
       
       // UPDATE ITEMS/TASKS labels if isInserting
  /*     
@@ -425,6 +486,14 @@ class App extends Component {
       // if isInserting (better: dragging) update tasks with content "x" to current slider value
     }
 
+
+    handleSliderChangeCommitted = initialTaskValues =>  {
+      
+      this.setState(this.state.initialState);  // revert state to state with initial values after slider use
+      // this.setState({ initialState: null }); // reset after slider use
+      console.log("HANDLESLIDERCHANGECOMMITED: reset initialState ... at least tried");
+      
+    }
 
     render() {
       // console.log("getWindowDimentions(): " + JSON.stringify(getWindowDimensions()) );
@@ -482,6 +551,7 @@ class App extends Component {
               <InsertSlider 
                 values={values} 
                 onSliderChange={this.handleSliderChange} // pass the index: onSliderChange function as prop to InsertSlider; there InsertSlider updates in handleSliderChange? the prop sliderValue, which can be used in index to update labels in tasks 
+                onSliderChangeCommited={this.handleSliderChangeCommitted}
                 style={{marginTop: '20px', marginBottom: '20px'}}
                 isInserting={this.state.isInserting} 
               />
