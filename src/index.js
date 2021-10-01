@@ -13,6 +13,17 @@ import validate from "./validation";  // import my function to validate an equat
 import InsertSlider from './InsertSlider';
 import InsertButton from './InsertButton';
 
+
+/* ---------------- LOGGING --------------------------- */
+
+console.data = function(msg) {
+  console.log(" % c % s % s % s", "color: yellow; background - color: black;", "–", msg, "–");
+}
+
+console.important = function(msg) {
+  console.log(" % c % s % s % s", "color: brown; font - weight: bold; text - decoration: underline;", "–", msg, "–");
+}
+
 /* ----------------------------------------------- */
 
 /* NOT IN USE
@@ -342,18 +353,30 @@ class App extends Component {
       console.log("--- TASKIDS: " + JSON.stringify(taskIds)); // ["task-1","task-3"] 
 
 
+      // DEBUG: Show my each taskId from the taskIds of currentState (to make sure they are read correctly)
       taskIds.map(taskId => {
-        console.log("--- TASKid: " + taskId); // works: task-1      task-3
+        console.log("--- DEBUG TASKid: " + taskId); // works: task-1      task-3
         return taskId; // NEEDED in arrow function; BUT NOT USED ??
       });
 
+      console.table(taskIds);
+      
+      // DEBUG: Show my each content of the taskId from the taskIds of currentState (to make sure they are read correctly)
+      taskIds.map(taskId => {
+        var taskTempContent = this.state.tasks[taskId].content;
+        console.log("+++ DEBUG TASKTEMPCONTENT: " + JSON.stringify(taskTempContent));
+        return taskId; // NEEDED in arrow function; BUT NOT USED ??
+      });
+
+      
 
       // --- 2. LOOK IN ALL TASKS - for these tasks -----
       var newState = null;
 
       // WORKS AND CAN MATCH ... BUT HOW TO ACCESS .content and replace it ??
       taskIds.map(taskId => {
-        var taskContent = initialState.tasks[taskId].content;
+        // var taskContent = initialState.tasks[taskId].content; // ORIGINAL version which produces initialState ... null ERROR
+        var taskContent = this.state.tasks[taskId].content;   // ISSUE: WORKS WITHOUT ERROR - but after 2nd commited, it does not updates&reset the x (value)
         console.log("+++ cur TASKCONTENT: " + JSON.stringify(taskContent));
 
         // TODO: replace only where content is "x"
@@ -364,9 +387,10 @@ class App extends Component {
 
           const newTask = {
             ...currentState.tasks[taskId],
-            content: sliderValue,     // ! update task content with current slider value (content is treated as string, sliderValue as variable)
+            // content: sliderValue,     // ! update task content with current slider value (content is treated as string, sliderValue as variable)
+            content: JSON.stringify(sliderValue, null, 2),     // ! update task content with current slider value (content is treated as string, sliderValue as variable)
           };
-          console.log("+++ NEWTASK: " + JSON.stringify(newTask));
+          console.log("+++ found x! NEWTASK: " + JSON.stringify(newTask));
   
           // TODO: REPLACE EXISTING TASK, not just add a new one with same id
   
@@ -380,19 +404,27 @@ class App extends Component {
           };
           // log whole state
           console.log("+++ NEWSTATE: " + JSON.stringify(newState, null, 2));
-  
-          // TODO PUT THIS OUTSIDE OF the map function for performance;
-          // but need to bundle all newTask 's into one update; 
-          // else just the last one will be updated
-          this.setState(newState);    // update state with new order of items
-  
 
-
+// ?rem? TEMP 14.05.         this.setState(newState);    // update state with new order of items
       
            
          } else {
             console.log("INDEX REPLACE: else: did not replace: " + taskId);
+            
+            // TRIES
+            // Removed because .. i don't know, maybe put it in again
+ // add 14.05.     
+            newState = this.state;
          }
+
+           
+          // TODO PUT THIS OUTSIDE OF the map function for performance;
+          // but need to bundle all newTask 's into one update; 
+          // else just the last one will be updated
+          // TRIES outside of if/else
+ // add TEMP 14.05.      
+          this.setState(newState);    // update state with new order of items
+  
 
   
         return taskId; // REFACTOR: NEEDED in arrow function; BUT NOT USED ??
@@ -417,15 +449,15 @@ class App extends Component {
       console.log("INDEX: handleInsertChange(): before isInserting: " + isInserting);
       // var reversedInsert = !isInserting;
      isInserting = !isInserting;
-
       console.log("INDEX: handleInsertChange(): after isInserting: " + isInserting);
+      
+      // UPDATE ISINSERTING: switch the boolean when "Prüfen" is clicked
       // this.setState({ isInserting: isInserting });
       console.log("INDEX: handleInsertChange(): before setState() isInserting: " + this.state.isInserting);
-    
       this.setState((state, isInserting) => ({
           // isInserting: isInserting // has the [object Object] problem?
-        isInserting: !state.isInserting // can remove the isInserting stuff above?
-          
+        isInserting: !state.isInserting, // can remove the isInserting stuff above?
+        
       }));
       // not correct? why? setState done asynchronously? or smthg else?
       console.log("INDEX: handleInsertChange(): state.isInserting: " + this.state.isInserting);
@@ -435,7 +467,6 @@ class App extends Component {
       // for updating task content, if slider is moved
       // remember current state, so thtat it can be reverted onChangeCommitted
       // TODO: make this more robust
-      
        if (isInserting) {
       // if (this.state.initialState == null) {
         // this.setState({ initialState: this.state });
@@ -488,10 +519,21 @@ class App extends Component {
 
 
     handleSliderChangeCommitted = initialTaskValues =>  {
+      console.log("HANDLESLIDERCHANGECOMMITED: trying to reset initialState, get ready ...");
       
-      this.setState(this.state.initialState);  // revert state to state with initial values after slider use
+      // take from current state the remembered original state from initialState and write initialState into current state
+      const initialStateUpdated = this.state.initialState;  // ADDED TRYING TO FIX A PROBLEM with intialState is null
+      console.log("HANDLESLIDERCHANGECOMMITED: this should be the origianl initialState " + JSON.stringify(initialStateUpdated, null, 2));
+      
+      // USED SOFFAR this.setState(this.state.initialState);  // revert state to state with initial values after slider use
+      this.setState(initialStateUpdated);  // revert state to state with initial values after slider use
+
+
+      // DEBUG: check if current State is really the original initialState
+      console.log("HANDLESLIDERCHANGECOMMITED: this is the new state and should be the origianl initialState " + JSON.stringify(this.state, null, 2));
+
       // this.setState({ initialState: null }); // reset after slider use
-      console.log("HANDLESLIDERCHANGECOMMITED: reset initialState ... at least tried");
+      console.log("HANDLESLIDERCHANGECOMMITED: reset initialState ... at least tried - END");
       
     }
 

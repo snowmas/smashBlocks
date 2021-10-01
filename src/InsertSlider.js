@@ -36,7 +36,7 @@ export default function InsertSlider({ values, isInserting, onSliderChange, onSl
 
   const handleInputChange = event => {
     setValue(event.target.value === "" ? "" : Number(event.target.value));
-    // console.log("LOG IS: handleInputChange: setValue(event.target.value): " + event.target.value);
+    console.log("InsertSlider | LOG IS: handleInputChange: setValue(event.target.value): " + event.target.value);
   };
 
   const handleBlur = () => {
