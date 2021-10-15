@@ -43,7 +43,10 @@ const initialData = {
 
 
     // for InsertButton toggling the InsertSlider
-    isInserting: false
+    isInserting: false,
+
+    // remember the whole state when a slider starts onChange (to revert to it onChangeCommited)
+    initialState: null
 };
 
 export default initialData;
