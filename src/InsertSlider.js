@@ -15,18 +15,14 @@ export default function InsertSlider({
   // NOTE: can't put this before React.useState because it doesn't allow that ...
   // TODO: change it to: !props.isInserting ... ?
   if (!isInserting) {
-    console.log(
-      "INSERTSLIDER: not executing: prop isInserting: " + isInserting
-    );
+    // DEBUG-BASIC console.log("INSERTSLIDER: not executing: prop isInserting: " + isInserting);
     return null;
   }
-  console.log("INSERTSLIDER: executing: prop isInserting: " + isInserting);
+  // DEBUG-BASIC console.log("INSERTSLIDER: executing: prop isInserting: " + isInserting);
 
   const handleSliderChange = (event, newValue) => {
     setValue(newValue);
-    console.log(
-      "INSERTSLIDER | handleSliderChange: setValue(newValue): " + newValue
-    );
+    // DEBUG-BASIC console.log("INSERTSLIDER | handleSliderChange: setValue(newValue): " + newValue);
 
     // updating the prop onSliderChange received from index, with the new slider value
     // this is a function from index.js, which was passed as a prop
@@ -55,6 +51,7 @@ export default function InsertSlider({
     }
   };
 
+  /*
   // SLIDER
   // Handle inputs change
   // ?? IS THIS WORKING AT ALL? ... log never gets called?
@@ -63,11 +60,9 @@ export default function InsertSlider({
     // console.log("LOG index: handleChange: input: " + input);  // INPUT NOT NEEDED HERE; input is only need to make handleChange generic and tell it which state var needs to be updated
     // NOT IN USE yet? this.setState({ [input]: event.target.value });  // ? needed to make handleChange generic, to handle the input field?
     setValue(event.target.value); // ADDED BY ME: sets the areaSpace state
-    console.log(
-      "INSERTSLIDER: handleChange: save state setValue(): event.target.value: " +
-        event.target.value
-    );
+    // DEBUG-BASIC console.log("INSERTSLIDER: handleChange: save state setValue(): event.target.value: " + event.target.value);
   };
+  */
 
   return (
     <div style={{ marginTop: "20px", marginBottom: "20px" }}>

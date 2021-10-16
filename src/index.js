@@ -120,20 +120,15 @@ function validateNow(newState) {
   const tasksX = column2.taskIds
     .map((taskId) => newState.tasks[taskId].content)
     .join(""); // WORKS, but ...
-  console.log(
-    "INDEX: validateNow(): PRINT STATE: current equation: tasks: " +
-      JSON.stringify(tasksX)
-  );
+  // DEBUG-BASIC console.log("INDEX: validateNow(): PRINT STATE: current equation: tasks: " + JSON.stringify(tasksX));
 
   // SOLVE: run mathsteps ... and get the solved result
   const msResult = validate(tasksX); // run validation and print to console
-  console.log("INDEX: validateNow(): validate() result: msResult: " + msResult);
+  // DEBUG-BASIC console.log("INDEX: validateNow(): validate() result: msResult: " + msResult);
 
   // SYNTAX CHECK ... TODO: rudimentary implementation
   var isSyntaxCorrect = msResult === "" ? false : true; // empty -> false; not empty -> true
-  console.log(
-    "INDEX: validateNow(): isSyntaxCorrect: " + isSyntaxCorrect.toString()
-  );
+  // DEBUG-BASIC console.log("INDEX: validateNow(): isSyntaxCorrect: " + isSyntaxCorrect.toString());
 
   // SOLUTION CHECK ... COMPARE: check if users equation is correct
   // -> compare mathsteps result with hardcoed result
@@ -147,9 +142,7 @@ function validateNow(newState) {
   if (msResult === "x = 30") {
     isSolutionCorrect = true;
   }
-  console.log(
-    "INDEX: validateNow(): isSolutionCorrect: " + isSolutionCorrect.toString()
-  );
+  // DEBUG-BASIC console.log("INDEX: validateNow(): isSolutionCorrect: " + isSolutionCorrect.toString());
 
   // UPDATE: show the user if his equation correct
   // -> update variable which gets display to user
@@ -178,10 +171,7 @@ function ValidationFeedback(props) {
   const SOLUTION_CORRECT = "😍";
   const SYNTAX_CORRECT = "🌱";
 
-  console.log(
-    "INDEX: ValidationFeedback: props.isSolutionCorrect: " +
-      props.isSolutionCorrect
-  );
+  // DEBUG-BASIC console.log("INDEX: ValidationFeedback: props.isSolutionCorrect: " + props.isSolutionCorrect);
 
   var validation_feedback = SOLUTION_WRONG;
   if (props.isSyntaxCorrect) {
@@ -192,9 +182,7 @@ function ValidationFeedback(props) {
   }
   // props.isSyntaxCorrect ? SYNTAX_CORRECT : SOLUTION_WRONG;
   // const validation_feedback = props.isSolutionCorrect ? SOLUTION_CORRECT : SOLUTION_WRONG;
-  console.log(
-    "INDEX: ValidationFeedback: validation_feedback: " + validation_feedback
-  );
+  // DEBUG-BASIC console.log("INDEX: ValidationFeedback: validation_feedback: " + validation_feedback);
 
   return validation_feedback;
 }
@@ -239,7 +227,7 @@ class App extends Component {
   state = initialData;
 
   onDragEnd = (result) => {
-    console.log("INDEX: onDragEnd(): --------- dragging ------------");
+    // DEBUG-BASIC console.log("INDEX: onDragEnd(): --------- dragging ------------");
     document.body.style.color = "inherit";
     document.body.style.backgroundColor = "inherit";
 
@@ -287,9 +275,7 @@ class App extends Component {
       this.setState(newNewState); // update state
       // ------- END of VALIDATON -----------------
 
-      console.log(
-        "INDEX: onDragEnd(): --------- finished dragging (within row) ------------"
-      );
+      // DEBUG-BASIC console.log("INDEX: onDragEnd(): --------- finished dragging (within row) ------------");
 
       return;
     }
@@ -328,13 +314,11 @@ class App extends Component {
     // MOVED, NOT NEEDED ANYMORE
     // this.setState({ initialState: this.state });
 
-    console.log(
-      "INDEX: onDragEnd(): --------- finished dragging (to other row) ------------"
-    );
+    // DEBUG-BASIC console.log("INDEX: onDragEnd(): --------- finished dragging (to other row) ------------");
   };
 
   // CURRENTLY HARDCODED IN INITIAL-DATA
-  // SET VARTASKS
+  // VARTASKS
   // set varTasks in state (once for a whole session, because the "x" variables stay the same across the session)
   /*
       var column1 = this.state.columns['column-1'];
@@ -352,40 +336,29 @@ class App extends Component {
 
   // update variables with slider value, while dragging slider, if "Prüfen" is activated
   handleSliderChange = (sliderValue) => {
-    console.log("INDEX: handleSliderChange(): sliderValue: " + sliderValue);
+    // DEBUG-BASIC console.log("INDEX: handleSliderChange(): sliderValue: " + sliderValue);
 
     // remember which tasks contained an "x",
     // because the current state will be overwritten with the slider value multiple times
 
-    var initialState = this.state.initialState;
-    /*
-      if (initialState == null) {
-        this.setState({ initialState: this.state });
-        console.log("INITIALSTATE was null");
-        console.log("+++ INITIALSTATE: " + JSON.stringify(initialState, null, 2));
-      } else {
-        console.log("INITIALSTATE WAS SET");
-        console.log("+++ INITIALSTATE: " + JSON.stringify(initialState, null, 2));
-      }
-     */
-
     // --- 1. GET THE TASKIDS THAT I NEED from the current state-----
 
     var currentState = this.state;
-
     var column1 = currentState.columns["column-1"]; // .taskIds DOES NOT WORK, WHY?
-    console.log("--- COLUMN1: " + JSON.stringify(column1)); // works {"id":"column-1","taskIds":["task-1","task-3"]}
+    // DEBUG-BASIC console.log("--- COLUMN1: " + JSON.stringify(column1)); // works {"id":"column-1","taskIds":["task-1","task-3"]}
     var taskIds = column1.taskIds;
-    console.log("--- TASKIDS: " + JSON.stringify(taskIds)); // ["task-1","task-3"]
+    // DEBUG-BASIC console.log("--- TASKIDS: " + JSON.stringify(taskIds)); // ["task-1","task-3"]
 
+    /*
     // DEBUG: Show my each taskId from the taskIds of currentState (to make sure they are read correctly)
     taskIds.map((taskId) => {
-      console.log("--- DEBUG TASKid: " + taskId); // works: task-1      task-3
+      // DEBUG-BASIC console.log("--- DEBUG TASKid: " + taskId); // works: task-1      task-3
       return taskId; // NEEDED in arrow function; BUT NOT USED ??
     });
-
     console.table(taskIds);
+    */
 
+    /*
     // DEBUG: Show my each content of the taskId from the taskIds of currentState (to make sure they are read correctly)
     taskIds.map((taskId) => {
       var taskTempContent = this.state.tasks[taskId].content;
@@ -394,32 +367,30 @@ class App extends Component {
       );
       return taskId; // NEEDED in arrow function; BUT NOT USED ??
     });
+    */
 
     // --- 2. LOOK IN ALL TASKS - for these tasks -----
     var newState = null;
 
-    var varTasks = this.state.varTasks;
-
+    // VARTASKS
+    // var varTasks = this.state.varTasks;
     // var tasks = this.state.tasks;
     // var taskContent = tasks[taskId].content;
 
     // WORKS AND CAN MATCH ... BUT HOW TO ACCESS .content and replace it ??
     taskIds.map((taskId) => {
-      // var taskContent = initialState.tasks[taskId].content; // ORIGINAL version which produces initialState ... null ERROR
-      var taskContent = this.state.tasks[taskId].content; // ISSUE: WORKS WITHOUT ERROR - but after 2nd commited, it does not updates&reset the x (value)
-      console.log("+++ cur TASKCONTENT: " + JSON.stringify(taskContent));
-
+      // VARTASKS
       // var Task = this.state.varTasks[taskId];
-
       // varTasks.map(id => {
       //  if (id === taskId) {
+
       if (taskId === "task-1" || taskId === "task-2") {
         const newTask = {
           ...currentState.tasks[taskId],
           // content: sliderValue,     // ! update task content with current slider value (content is treated as string, sliderValue as variable)
           content: JSON.stringify(sliderValue, null, 2) // ! update task content with current slider value (content is treated as string, sliderValue as variable)
         };
-        console.log("+++ found x! NEWTASK: " + JSON.stringify(newTask));
+        // DEBUG-BASIC console.log("+++ found x! NEWTASK: " + JSON.stringify(newTask));
 
         // TODO: REPLACE EXISTING TASK, not just add a new one with same id
 
@@ -432,20 +403,18 @@ class App extends Component {
           }
         };
         // log whole state
-        console.log("+++ NEWSTATE: " + JSON.stringify(newState, null, 2));
+        // DEBUG-BASIC console.log("+++ NEWSTATE: " + JSON.stringify(newState, null, 2));
 
         // ?rem? TEMP 14.05.         this.setState(newState);    // update state with new order of items
       } else {
-        console.log("INDEX REPLACE: else: did not replace: " + taskId);
+        // DEBUG-BASIC console.log("INDEX REPLACE: else: did not replace: " + taskId);
 
-        // TRIES
-        // Removed because .. i don't know, maybe put it in again
-        // add 14.05.
         newState = this.state;
       }
 
       this.setState(newState); // update state with new order of items
 
+      // VARTASKS
       //        return id; // REFACTOR: NEEDED in arrow function; BUT NOT USED ??
       //      }); // end of varTasks.map
 
@@ -453,178 +422,34 @@ class App extends Component {
     }); // end of taskIds.map
   }; // end of handleSliderChange
 
-  /*
-        // TODO: replace only where content is "x"
-        // WORKS BUT ONLY THE FIRST TIME; Further: x -> 16 -> no replacement
-          // REMEMBER INITIAL STATE and reset to x
-          // END WITH PRÜFEN ENDE (works?)
-         if (taskContent === "x") {
-
-          const newTask = {
-            ...currentState.tasks[taskId],
-            // content: sliderValue,     // ! update task content with current slider value (content is treated as string, sliderValue as variable)
-            content: JSON.stringify(sliderValue, null, 2),     // ! update task content with current slider value (content is treated as string, sliderValue as variable)
-          };
-          console.log("+++ found x! NEWTASK: " + JSON.stringify(newTask));
-  
-          // TODO: REPLACE EXISTING TASK, not just add a new one with same id
-  
-          // combine all tasks that should be updated into 1 setState()? outside of map
-          newState = {
-            ...this.state,  // replace with currentState?
-            tasks: {
-            ...this.state.tasks,
-              [taskId]: newTask,
-            },
-          };
-          // log whole state
-          console.log("+++ NEWSTATE: " + JSON.stringify(newState, null, 2));
-
-// ?rem? TEMP 14.05.         this.setState(newState);    // update state with new order of items
-      
-           
-         } else {
-            console.log("INDEX REPLACE: else: did not replace: " + taskId);
-            
-            // TRIES
-            // Removed because .. i don't know, maybe put it in again
- // add 14.05.     
-            newState = this.state;
-         }
-
-           
-          // TODO PUT THIS OUTSIDE OF the map function for performance;
-          // but need to bundle all newTask 's into one update; 
-          // else just the last one will be updated
-          // TRIES outside of if/else
- // add TEMP 14.05.      
-          this.setState(newState);    // update state with new order of items
- 
-
-  
-        return taskId; // REFACTOR: NEEDED in arrow function; BUT NOT USED ??
-      });
- 
-      
-  
-          
-        // REPLACE
-        // var tasksStringified = JSON.stringify(tasks);
-        // tasksStringified = tasksStringified.replace('"content": "x"', '"content": "a"');
-        
-
- 
-
-      // TODO: setState (with new tasks)
-    }
-*/
-
   // INSERTBUTTON
   // Function to set the parent's state
   handleInsertChange = (isInserting) => {
-    console.log(
-      "INDEX: handleInsertChange(): before isInserting: " + isInserting
-    );
+    // DEBUG-BASIC console.log("INDEX: handleInsertChange(): before isInserting: " + isInserting);
     // var reversedInsert = !isInserting;
     isInserting = !isInserting;
-    console.log(
-      "INDEX: handleInsertChange(): after isInserting: " + isInserting
-    );
+    // DEBUG-BASIC console.log("INDEX: handleInsertChange(): after isInserting: " + isInserting);
 
     // UPDATE ISINSERTING: switch the boolean when "Prüfen" is clicked
     // this.setState({ isInserting: isInserting });
-    console.log(
-      "INDEX: handleInsertChange(): before setState() isInserting: " +
-        this.state.isInserting
-    );
+    // DEBUG-BASIC console.log("INDEX: handleInsertChange(): before setState() isInserting: " + this.state.isInserting);
     this.setState((state, isInserting) => ({
       // isInserting: isInserting // has the [object Object] problem?
       isInserting: !state.isInserting // can remove the isInserting stuff above?
     }));
     // not correct? why? setState done asynchronously? or smthg else?
-    console.log(
-      "INDEX: handleInsertChange(): state.isInserting: " +
-        this.state.isInserting
-    );
+    // DEBUG-BASIC console.log("INDEX: handleInsertChange(): state.isInserting: " + this.state.isInserting);
 
-    // SAVE INITIAL STATE for handleSliderChange
-    // for updating task content, if slider is moved
-    // remember current state, so thtat it can be reverted onChangeCommitted
-    // TODO: make this more robust
-    if (isInserting) {
-      // if (this.state.initialState == null) {
-      // this.setState({ initialState: this.state });
-      this.setState((state) => ({
-        initialState: state
-      }));
+    // DEBUG-BASIC console.log("+++ this.state: " + JSON.stringify(this.state, null, 2));
+    // DEBUG-BASIC console.log("SAVED INITIALSTATE SNAPSHOT");
 
-      console.log("+++ this.state: " + JSON.stringify(this.state, null, 2));
-      console.log("SAVED INITIALSTATE SNAPSHOT");
-    }
-
-    // UPDATE ITEMS/TASKS labels if isInserting
-    /*     
-      // only if isInserting
-      if (isInserting) {
-        
-        // First: get areaSpace ... either from state or pros
-        const areaSpace = this.state.areaSpace;
-
-        // Second: get items of column 1
-        const columnId = 1;
-        
-        // TODO only if column 1 is not empty
-        // iterate through tasks and look for "x" value; 
-        // replace each "x" with areaChange
-        const column = this.state.columns[columnId];
-        const newTasks = column.taskIds.map(taskId => 
-          // this.state.tasks[taskId];
-          if (this.state.tasks[taskId].contains("x")) {
-            this.state.tasks[taskId].replace(areaSpace);
-          } else {
-            this.state.tasks[taskId];
-          }
-        );
-        // setState( ... newTasks)
-      
-
-    
-      
-        // // return column.title;
-        //  return <Column key={column.id} column={column} tasks={tasks} />;
-      } else if (!isInserting) {
-        // replace the current with the original
-      } else {
-        console.log("INDEX: WARNING!!! - SHOULD NEVER HAPPEN");
-      }
-*/
     // if isInserting (better: dragging) update tasks with content "x" to current slider value
   };
 
   handleSliderChangeCommitted = (initialTaskValues) => {
-    /*
-      console.log("HANDLESLIDERCHANGECOMMITED: trying to reset initialState, get ready ...");
-      
-      // take from current state the remembered original state from initialState and write initialState into current state
-      const initialStateUpdated = this.state.initialState;  // ADDED TRYING TO FIX A PROBLEM with intialState is null
-      console.log("HANDLESLIDERCHANGECOMMITED: this should be the origianl initialState " + JSON.stringify(initialStateUpdated, null, 2));
-      
-      // USED SOFFAR this.setState(this.state.initialState);  // revert state to state with initial values after slider use
-      this.setState(initialStateUpdated);  // revert state to state with initial values after slider use
-
-
-      // DEBUG: check if current State is really the original initialState
-      console.log("HANDLESLIDERCHANGECOMMITED: this is the new state and should be the origianl initialState " + JSON.stringify(this.state, null, 2));
-
-      // this.setState({ initialState: null }); // reset after slider use
-      console.log("HANDLESLIDERCHANGECOMMITED: reset initialState ... at least tried - END");
-      
-    */
-
     // RESET TO "X" (hardcoded)
     // to reset content of task-1 and task-2 back to "x"
     // COPIED FROM handleSliderChange
-
     const origVarValue = "x";
 
     var currentState = this.state;
@@ -650,7 +475,7 @@ class App extends Component {
           }
         };
       } else {
-        console.log("INDEX REPLACE: else: did not replace: " + taskId);
+        // DEBUG-BASIC console.log("INDEX REPLACE: else: did not replace: " + taskId);
 
         newState = this.state;
       }
@@ -668,19 +493,16 @@ class App extends Component {
     // console.log("LOG isEqSyntaxCorrect: " + this.state.isEqSyntaxCorrect.toString()); // TODO: updates 1 run too late!
     // console.log("LOG isEqSolutionCorrect: " + this.state.isEqSolutionCorrect.toString()); // TODO: updates 1 run too late!
 
-    console.log("INDEX: render(): ------- RENDER-START ------------- ");
+    // DEBUG-BASIC console.log("INDEX: render(): ------- RENDER-START ------------- ");
 
     // SLIDER
     const { propertyType, areaSpace, designStyle } = this.state; // take those three items from state and put them into the const values and hand it to the slider - but just areaspace will be used (see InsertSlider.js)
-    console.log("INDEX: render(): this.state default: areaSpace: " + areaSpace);
+    // DEBUG-BASIC console.log("INDEX: render(): this.state default: areaSpace: " + areaSpace);
     const values = { propertyType, areaSpace, designStyle }; // for InsertSlider
 
     // INSERTBUTTON
     // const { isInserting } = this.state;
-    console.log(
-      "INDEX: render(): this.state default: isInserting: " +
-        this.state.isInserting
-    );
+    // DEBUG-BASIC console.log("INDEX: render(): this.state default: isInserting: " + this.state.isInserting);
 
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
